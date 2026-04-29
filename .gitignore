@@ -1,0 +1,79 @@
+# ----------------------
+# Python
+# ----------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+
+# ----------------------
+# Jupyter
+# ----------------------
+.ipynb_checkpoints/
+
+# ----------------------
+# Logs
+# ----------------------
+*.log
+
+# ----------------------
+# Environment variables
+# ----------------------
+.env
+
+# ----------------------
+# OS files
+# ----------------------
+.DS_Store
+Thumbs.db
+
+# ----------------------
+# IDEs
+# ----------------------
+.vscode/
+.idea/
+
+# ----------------------
+# ML / CV specific (IMPORTANT)
+# ----------------------
+
+# Model weights
+*.pt
+*.pth
+*.onnx
+*.h5
+*.ckpt
+
+# Datasets
+data/
+datasets/
+images/
+videos/
+*.mp4
+*.avi
+
+# Training outputs
+runs/
+outputs/
+results/
+checkpoints/
+
+# Temporary files
+*.cache
+
+# ----------------------
+# Large files (generic)
+# ----------------------
+*.zip
+*.tar
+*.gz
+*.7z
+raw_data/
+*.txt
