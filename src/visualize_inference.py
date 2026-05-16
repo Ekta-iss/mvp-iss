@@ -5,7 +5,7 @@ from ultralytics import YOLO
 # =========================
 # CONFIGURATION
 # =========================
-TARGET_WORK_ORDER = 14  
+TARGET_WORK_ORDER = 25  
 MODEL_PATH = "./runs/detect/v2/train-colab/weights/best.pt"
 VIDEO_PATH = "../data/raw/videos/video_01.mp4"
 
