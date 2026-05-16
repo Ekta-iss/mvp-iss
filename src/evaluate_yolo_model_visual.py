@@ -10,7 +10,7 @@ from glob import glob
 MODEL_PATH = "./runs/detect/v2/train-colab/weights/best.pt"
 
 TEST_IMAGE_DIR = "../data/processed/final_yolo_dataset1/images/test"
-OUTPUT_DIR = "./runs/eval_results"
+OUTPUT_DIR = "./runs/eval_results_visual"
 
 CONF_THRESHOLD = 0.5
 

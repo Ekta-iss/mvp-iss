@@ -12,7 +12,7 @@ MODEL_PATH = os.path.join(
     "src",
     "runs",
     "detect",
-    "v1",
+    "v2",
     "train-colab",
     "weights",
     "best.pt"
@@ -22,11 +22,11 @@ DATA_YAML_PATH = os.path.join(
     BASE_DIR,
     "data",
     "processed",
-    "final_yolo_dataset",
+    "final_yolo_dataset1",
     "data.yaml"
 )
 
-OUTPUT_DIR = os.path.join(BASE_DIR, "src", "runs", "eval")
+OUTPUT_DIR = os.path.join(BASE_DIR, "src", "runs", "eval_results_metrics")
 
 # =========================
 # LOAD CLASS NAMES
