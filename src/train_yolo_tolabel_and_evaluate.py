@@ -12,7 +12,7 @@ CVAT_PATH = ROOT / "annotations" / "cvat" / "video_01"
 IMG_SRC = CVAT_PATH / "images"
 LBL_SRC = CVAT_PATH / "labels"
 
-YOLO_DATASET = ROOT / "processed" / "video_01_yolo_labeled"
+YOLO_DATASET = ROOT / "processed" / "video_01_yolo_label_training_set"
 
 SEED = 42
 

@@ -5,7 +5,7 @@
 **SmartVision Logistics MVP** is an intelligent computer vision system for automated container and equipment detection, tracking, and logistics management in warehouse/port operations. The system leverages YOLOv11 for real-time object detection and multi-object tracking to monitor crane operations, spreader equipment, and container movements.
 
 ### 🎯 Key Features
-- **Real-time Object Detection** - Detects 8 classes: cranes, spreaders, containers, hooks, AGVs, and lane markers
+- **Real-time Object Detection** - Detects 4 classes: cranes, spreaders, containers, and lane markers
 - **Multi-Object Tracking** - Tracks equipment and containers across video frames
 - **Automated Labeling** - Auto-labels frames using trained YOLO models
 - **Dataset Management** - Merges CVAT and YOLO annotations with watermark removal
@@ -20,14 +20,15 @@
 ```
 mvp-iss/
 ├── src/
-│   ├── prepare_dataset_yolo.py              # Dataset preparation & splitting
-│   ├── train_yolo_tolabel_and_evaluate.py   # Complete training pipeline
-│   ├── auto_label_frames.py                 # Auto-label frames with trained model
-│   ├── evaluate_yolo_model_metrics.py       # Model evaluation (metrics)
-│   ├── evaluate_yolo_model_visual.py        # Model evaluation (visual)
+│   ├── prepare_dataset_yolo.py              # Dataset preparation & splitting (cvat images)
+│   ├── train_yolo_tolabel_and_evaluate.py   # YOLO label training & evaluation pipeline
+│   ├── auto_label_frames.py                 # Auto-label remaining frames with trained model
 │   ├── merge_cvat_yolo_dataset.py           # Merge CVAT & YOLO datasets
+│   ├── train_yolo_alignment.ipynb           # Actual training notebook colab (for reference)
 │   ├── train_yolo_model_alignment_local.py  # Local training variant 1
 │   ├── train_yolo_model_alignment_local2.py # Local training variant 2
+│   ├── evaluate_yolo_model_metrics.py       # Model evaluation (metrics)
+│   ├── evaluate_yolo_model_visual.py        # Model evaluation (visual)
 │   └── visualize_inference.py               # Real-time video inference with tracking
 ├── data/
 │   ├── raw/                                 # Raw videos & frames
@@ -36,6 +37,7 @@ mvp-iss/
 │   └── debug_visualization/                 # Debug visualizations
 ├── runs/                                    # Training outputs (models, weights)
 ├── .gitignore                               # Git ignore rules
+├── requirements.txt                         # Python dependencies  
 └── README.md                                # This file
 
 ```
@@ -44,27 +46,8 @@ mvp-iss/
 
 ## 📖 Module Descriptions
 
-### **prepare_dataset_yolo.py**
-Prepares and organizes the YOLO dataset for training.
-
-**Features:**
-- Loads image-label pairs from merged dataset
-- Splits data into train/val/test (80/10/10)
-- Removes watermarks and adjusts bounding box labels
-- Creates debug visualizations
-- Generates `data.yaml` configuration file
-
-**Usage:**
-```bash
-python src/prepare_dataset_yolo.py
-```
-
-**Output:** `../data/processed/final_yolo_dataset1/`
-
----
-
 ### **train_yolo_tolabel_and_evaluate.py**
-Complete end-to-end training pipeline.
+yolo label training & evaluation pipeline on CVAT images.
 
 **Steps:**
 1. Creates YOLO directory structure
@@ -89,12 +72,14 @@ OPTIMIZER = "Adam"
 python src/train_yolo_tolabel_and_evaluate.py
 ```
 
-**Output:** Model weights in `./runs/yolo_label_model/v1_cpu/weights/best.pt`
+**Dataset split saved in:** 1. Model weights in `../data/processed/final_yolo_dataset1/`
+**Output:** 1. Model weights in `./runs/yolo_label_model/v1_cpu/weights/best.pt`
+
 
 ---
 
 ### **auto_label_frames.py**
-Automatically labels video frames using a trained YOLO model.
+Automatically labels remaining video frames using a trained YOLO model.
 
 **Features:**
 - Loads trained YOLO model
@@ -116,6 +101,106 @@ python src/auto_label_frames.py
 **Output:**
 - Images: `../data/annotations/yolo_labeled/video_01/images/`
 - Labels: `../data/annotations/yolo_labeled/video_01/labels/`
+
+---
+
+### **merge_cvat_yolo_dataset.py**
+Merges CVAT and YOLO datasets
+
+**Features:**
+- Converts CVAT XML annotations to YOLO format
+- Consolidates multiple dataset sources
+- Validates image-label pairs
+
+**Usage:**
+```bash
+python src/merge_cvat_yolo_dataset.py
+```
+
+**Output:**
+- Merged dataset in `../data/processed/cvat_yolo_merged_dataset/` with `images/` and `labels/` directories.
+
+---
+
+### **prepare_dataset_yolo.py**
+Prepares and organizes the merged dataset for training.
+
+**Features:**
+- Loads image-label pairs from merged dataset
+- Splits data into train/val/test (80/10/10)
+- Data preprocessing (resizing, normalization)
+- Removes watermarks and adjusts bounding box labels
+- Creates debug visualizations
+- Generates `data.yaml` configuration file
+
+**Usage:**
+```bash
+python src/prepare_dataset_yolo.py
+```
+
+**Output:** `../data/processed/final_yolo_dataset1/`
+
+---
+
+
+### **train_yolo_alignment.ipynb** (Colab Notebook Training Pipeline)
+Cell 3 from this notebook is the main training pipeline for YOLO label training and evaluation.
+
+**Features:**
+- ✅ GPU-accelerated training (NVIDIA GPU on Colab)
+- ✅ Custom hyperparameter tuning
+- ✅ Real-time training monitoring
+- ✅ Model checkpointing and saving
+- ✅ Inference on validation images
+- ✅ Custom visualization with class-specific colors
+- ✅ Direct integration with Google Drive
+
+**Configuration:**
+```python
+
+```
+
+**Usage:**
+```bash
+python src/**
+Cell 3 src/train-yolo-alignment.ipynb
+```
+
+**Output:** 1. Best and Final Models saved in Googledrive
+
+---
+
+
+### **Copy Trained model from Google Drive to Local**
+Copied the model generated in previous step to local directory for inference and evaluation.
+
+
+**Local Folder Path:** `./runs/detect/v2/train-colab/weights/best.pt`
+---
+
+
+### **Evaluate Trained YOLO Model**
+Evaluated the trained model on validation set using `evaluate_yolo_model_metrics.py` and `evaluate_yolo_model_visual.py` scripts.
+
+**Steps:**
+1. Evaluated model performance with numerical metrics (precision, recall, mAP) using `evaluate_yolo_model_metrics.py`
+- Precision, Recall, F1-Score
+- mAP (mean Average Precision)
+- Per-class performance
+2. Generated visual evaluation outputs (prediction visualizations, confusion matrices) using `evaluate_yolo_model_visual.py`
+- Prediction visualizations
+- Confusion matrices
+- Sample detections
+
+**Configuration:**
+```python
+MODEL_PATH = "./runs/detect/v2/train-colab/weights/best.pt"
+VAL_IMAGES_PATH = "../data/processed/final_yolo_dataset1/images/val/"
+```
+
+**Output:**
+- 1. Numerical metrice saved in `./runs/evaluation_metrics/`
+- 2. Visual evaluation outputs saved in `./runs/evaluation_visuals/`
 
 ---
 
@@ -143,54 +228,10 @@ CONF_THRESHOLD = 0.25
 python src/visualize_inference.py
 ```
 
-**Output:** Display window with annotated video (Press 'q' to quit)
+**Output:** Display window with annotated video (Press 'q' to quit) and saved inference video in `./runs/inference_outputs/smartVision_inference.mp4`
 
 ---
 
-### **evaluate_yolo_model_metrics.py**
-Evaluates model performance with numerical metrics.
-
-**Metrics:**
-- Precision, Recall, F1-Score
-- mAP (mean Average Precision)
-- Per-class performance
-
-**Usage:**
-```bash
-python src/evaluate_yolo_model_metrics.py
-```
-
----
-
-### **evaluate_yolo_model_visual.py**
-Generates visual evaluation outputs.
-
-**Outputs:**
-- Prediction visualizations
-- Confusion matrices
-- Sample detections
-
-**Usage:**
-```bash
-python src/evaluate_yolo_model_visual.py
-```
-
----
-
-### **merge_cvat_yolo_dataset.py**
-Merges datasets from CVAT annotation tool with YOLO format.
-
-**Features:**
-- Converts CVAT XML annotations to YOLO format
-- Consolidates multiple dataset sources
-- Validates image-label pairs
-
-**Usage:**
-```bash
-python src/merge_cvat_yolo_dataset.py
-```
-
----
 
 ## 🛠️ Installation
 
