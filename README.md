@@ -155,10 +155,6 @@ Cell 3 from this notebook is the main training pipeline for YOLO label training 
 - ✅ Custom visualization with class-specific colors
 - ✅ Direct integration with Google Drive
 
-**Configuration:**
-```python
-
-```
 
 **Usage:**
 ```bash
@@ -236,7 +232,8 @@ python src/visualize_inference.py
 ## 🛠️ Installation
 
 ### Prerequisites
-- Python 3.8+
+- Git
+- Python 3.14
 - CUDA (optional, for GPU support)
 
 ### Setup
@@ -317,42 +314,6 @@ data/
 | 5 | **container_corner** | Container corner/attachment |
 | 6 | **AGV** | Automated Guided Vehicle |
 | 7 | **lane_marker** | Lane marking/guide |
-
----
-
-## 🚀 Quick Start Workflow
-
-### Step 1: Prepare Dataset
-```bash
-python src/prepare_dataset_yolo.py
-```
-This will:
-- Validate image-label pairs
-- Remove watermarks
-- Split into train/val/test
-- Create debug visualizations
-
-### Step 2: Train Model
-```bash
-python src/train_yolo_tolabel_and_evaluate.py
-```
-This will:
-- Create YOLOv11n model (or load existing)
-- Train for 50 epochs
-- Evaluate on validation set
-- Save best weights
-
-### Step 3: Auto-label New Frames (Optional)
-```bash
-python src/auto_label_frames.py
-```
-Auto-generates labels for unlabeled frames using the trained model.
-
-### Step 4: Inference on Video
-```bash
-python src/visualize_inference.py
-```
-Watch real-time detection with tracking and logistics alerts!
 
 ---
 
@@ -512,6 +473,9 @@ This project is provided as-is for internal use.
 
 ## 👨‍💻 Author
 
+Ekta Upadhyay - A0315368Y
+Perumal Lingon - A0092646X
+
 **Ekta-iss**  
 GitHub: [Ekta-iss](https://github.com/Ekta-iss)
 
@@ -531,5 +495,5 @@ For issues, questions, or contributions, please open a GitHub issue in the repos
 
 ---
 
-**Last Updated:** May 16, 2026
+**Last Updated:** May 17, 2026
 
