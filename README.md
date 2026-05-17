@@ -473,8 +473,11 @@ This project is provided as-is for internal use.
 
 ## 👨‍💻 Author
 
+--------------------------
 Ekta Upadhyay - A0315368Y
+--------------------------
 Perumal Lingon - A0092646X
+--------------------------
 
 **Ekta-iss**  
 GitHub: [Ekta-iss](https://github.com/Ekta-iss)
